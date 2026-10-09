@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>暮燁墜隳樓</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        @font-face {
+            font-family: 'SuifengPlus';
+            src: url('./assets/ThePeakFontPlus-Regular.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        body {
+            font-family: 'SuifengPlus', serif;
+            background: linear-gradient(to bottom, #fff8e8, #f2e4c2);
+            color: #2c1e16;
+            min-height: 100vh;
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+        /* 隱藏卷軸但保持滾動 */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        /* 自定義淡入動畫 */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in {
+            animation: fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+    </style>
+</head>
+<body class="selection:bg-[#8b261b]/20 selection:text-[#8b261b]">
+
+    <header class="w-full px-6 py-3 flex justify-between items-center text-xs tracking-widest text-[#4a3a31]/75 border-b border-[#2c1e16]/10 relative">
+        <!-- 左上側：English 語言切換 (帶有 hover 浮動小視窗) -->
+        <div class="flex items-center space-x-6">
+            <div class="relative group cursor-pointer">
+                <span class="hover:text-[#8b261b] transition-colors flex items-center gap-1">
+                    English
+                </span>
+                <!-- 語言提示小視窗 -->
+                <div class="absolute left-0 top-full mt-2 w-48 bg-[#fff8e8] border border-[#2c1e16]/30 p-3 shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50 text-center">
+                    <p class="text-[#8b261b] tracking-widest text-xs font-serif">尚未支持此語言。</p>
+                </div>
+            </div>
+            <span onclick="switchTab('qa')" class="hover:text-[#8b261b] cursor-pointer transition-colors">Ｑ&Ａ</span>
+        </div>
+
+        <!-- 右上側：僅保留登入系統 (帶有 hover 浮動小視窗，內含代號、密語及純擺設說明) -->
+        <div class="flex items-center space-x-6">
+            <div class="relative group cursor-pointer">
+                <div class="flex items-center hover:text-[#8b261b] transition-colors py-1">
+                    <i data-lucide="user" class="w-3.5 h-3.5 mr-1.5"></i>
+                    <span>登入系統</span>
+                </div>
+                <!-- 登入面板懸停小視窗 -->
+                <div class="absolute right-0 top-full mt-2 w-64 bg-[#fff8e8] border border-[#2c1e16]/30 p-4 shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50 text-left" onclick="event.stopPropagation()">
+                    <div class="space-y-3">
+                        <div class="text-xs text-[#8b261b] tracking-widest border-b border-[#2c1e16]/20 pb-1 font-bold">墜隳樓機密通道</div>
+                        <div>
+                            <label class="block text-[10px] text-[#4a3a31] tracking-widest mb-1">代號</label>
+                            <input type="text" placeholder="請輸入代號..." class="w-full bg-[#fffcf5] border border-[#2c1e16]/30 px-2 py-1 text-xs text-[#2c1e16] focus:outline-none focus:border-[#8b261b]">
+                        </div>
+                        <div>
+                            <label class="block text-[10px] text-[#4a3a31] tracking-widest mb-1">密語</label>
+                            <input type="password" placeholder="請輸入密語..." class="w-full bg-[#fffcf5] border border-[#2c1e16]/30 px-2 py-1 text-xs text-[#2c1e16] focus:outline-none focus:border-[#8b261b]">
+                        </div>
+                        <button type="button" onclick="alert('此功能未開啟，純屬裝飾擺設。')" class="w-full bg-[#2c1e16] text-[#e8dcb8] py-1 text-xs tracking-widest hover:bg-[#8b261b] transition-colors">
+                            驗證通行
+                        </button>
+                        <p class="text-[10px] text-[#8b261b]/80 tracking-wider text-center pt-1">該功能並未開啟，純屬擺設。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="pt-6 pb-4 text-center border-b border-[#2c1e16]/10 bg-[#f3e9d2]/40 backdrop-blur-sm sticky top-0 z-30">
+        <div class="mb-4">
+            <h1 class="text-3xl md:text-4xl tracking-[0.4em] ml-[0.4em] font-bold text-[#2c1e16]">
+                暮燁墜隳樓
+            </h1>
+            <p class="mt-2 text-[#be0016] tracking-[0.6em] text-[10px] opacity-85 ml-[0.6em]">
+                ʍʏʐɦʊɨ𐔌՞ ܸ.ˬ.ܸ՞𐦯
+            </p>
+        </div>
+
+        <!-- 橫向導覽按鈕 -->
+        <nav class="flex justify-center flex-wrap gap-x-8 md:gap-x-12 gap-y-2 px-4">
+            <button onclick="switchTab('history')" id="nav-history" class="nav-btn text-sm md:text-base tracking-[0.25em] text-[#8b261b] relative py-1 transition-all">
+                組織介紹
+                <span class="absolute bottom-0 left-0 w-full h-[1.5px] bg-[#8b261b] transition-transform duration-300 scale-x-100"></span>
+            </button>
+            <button onclick="switchTab('members')" id="nav-members" class="nav-btn text-sm md:text-base tracking-[0.25em] text-[#4a3a31] hover:text-[#8b261b] relative py-1 transition-all">
+                成員組成
+                <span class="absolute bottom-0 left-0 w-full h-[1.5px] bg-[#8b261b] transition-transform duration-300 scale-x-0"></span>
+            </button>
+            <button onclick="switchTab('services')" id="nav-services" class="nav-btn text-sm md:text-base tracking-[0.25em] text-[#4a3a31] hover:text-[#8b261b] relative py-1 transition-all">
+                業務提供
+                <span class="absolute bottom-0 left-0 w-full h-[1.5px] bg-[#8b261b] transition-transform duration-300 scale-x-0"></span>
+            </button>
+            <button onclick="switchTab('contact')" id="nav-contact" class="nav-btn text-sm md:text-base tracking-[0.25em] text-[#4a3a31] hover:text-[#8b261b] relative py-1 transition-all">
+                聯絡我們
+                <span class="absolute bottom-0 left-0 w-full h-[1.5px] bg-[#8b261b] transition-transform duration-300 scale-x-0"></span>
+            </button>
+            <button onclick="switchTab('announcement')" id="nav-announcement" class="nav-btn text-sm md:text-base tracking-[0.25em] text-[#4a3a31] hover:text-[#8b261b] relative py-1 transition-all">
+                組織公告
+                <span class="absolute bottom-0 left-0 w-full h-[1.5px] bg-[#8b261b] transition-transform duration-300 scale-x-0"></span>
+            </button>
+        </nav>
+    </div>
+
+    <main class="py-16 px-6 sm:px-12 max-w-5xl mx-auto min-h-[50vh]">
+        <div id="content-container" class="animate-fade-in">
+            <!-- 預設載入組織介紹內容 -->
+        </div>
+    </main>
+
+    <!-- 頁尾 -->
+    <footer class="py-12 text-center text-[#4a3a31]/60 text-xs tracking-widest border-t border-[#2c1e16]/10">
+        <p>&copy; 2026 暮燁墜隳樓 All Rights Reserved.</p>
+    </footer>
+
+    <script>
+        // 初始化圖標
+        lucide.createIcons();
+
+        // 頁面內容數據定義 (包含最新自定義文本與所有成員)
+        const pages = {
+            history: `
+                <div class="max-w-4xl mx-auto">
+                    <div class="flex flex-col items-center mb-16">
+                        <h2 class="text-2xl tracking-[0.3em] text-[#2c1e16] mb-4">組織介紹</h2>
+                        <div class="w-12 h-[1px] bg-[#8b261b]"></div>
+                    </div>
+                    
+                    <div class="space-y-16">
+                        <div class="flex flex-col md:flex-row gap-8 items-start">
+                            <div class="md:w-1/4 text-right border-r border-[#2c1e16]/20 pr-6 pb-4">
+                                <span class="text-[#8b261b] tracking-widest text-lg">營運宗旨</span>
+                            </div>
+                            <div class="md:w-3/4 space-y-3">
+                                <h3 class="text-xl tracking-widest mb-3 text-[#2c1e16]">人不虛榮枉少年</h3>
+                                <p class="text-[#4a3a31] leading-loose text-justify">
+                                    吾等幹活的目的是什麼？是為了金錢？是的，您說的對，就是這麼荒唐。
+                                </p>
+                                <p class="text-[#4a3a31] leading-loose text-justify">
+                                    金錢是吾等的血液，是吾等的氧氣，沒有它，吾等就無法呼吸。
+                                </p>
+                                <p class="text-[#4a3a31] leading-loose text-justify">
+                                    加入暮燁墜隳樓，同吾等沒心沒肺的搞錢，才是您人生的正軌！
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="flex flex-col md:flex-row gap-8 items-start">
+                            <div class="md:w-1/4 text-right border-r border-[#2c1e16]/20 pr-6 pb-4">
+                                <span class="text-[#8b261b] tracking-widest text-lg">立場聲明</span>
+                            </div>
+                            <div class="md:w-3/4 space-y-3">
+                                <h3 class="text-xl tracking-widest mb-3 text-[#2c1e16]">哪邊有錢 吾等站哪邊</h3>
+                                <p class="text-[#4a3a31] leading-loose text-justify">
+                                    暮燁墜隳樓，簡稱「墜隳樓」。
+                                </p>
+                                <p class="text-[#4a3a31] leading-loose text-justify">
+                                    浮於苦境上空的情報組織，主營情報交換。
+                                </p>
+                                <p class="text-[#4a3a31] leading-loose text-justify">
+                                    不屬於正邪兩道，不受任何勢力管轄。
+                                </p>
+                                <p class="text-[#4a3a31] leading-loose text-justify">
+                                    只要禍事可能波及吾等，對吾等無利益，吾等便遁世。
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="flex flex-col md:flex-row gap-8 items-start">
+                            <div class="md:w-1/4 text-right border-r border-[#2c1e16]/20 pr-6 pb-4">
+                                <span class="text-[#8b261b] tracking-widest text-lg">荒唐事跡</span>
+                            </div>
+                            <div class="md:w-3/4 space-y-3">
+                                <h3 class="text-xl tracking-widest mb-3 text-[#2c1e16]">副樓主賣藝不賣身</h3>
+                                <p class="text-[#4a3a31] leading-loose text-justify">
+                                    墜隳樓給人一種不正經酒樓的感覺。
+                                </p>
+                                <p class="text-[#4a3a31] leading-loose text-justify">
+                                    副樓主總穿得像花魁一樣，讓人不禁懷疑他到底是做什麼的。
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `,
+            members: `
+                <div class="max-w-5xl mx-auto">
+                    <div class="flex flex-col items-center mb-16">
+                        <h2 class="text-2xl tracking-[0.3em] text-[#2c1e16] mb-4">核心成員</h2>
+                        <div class="w-12 h-[1px] bg-[#8b261b]"></div>
+                    </div>
+
+                    <div class="grid md:grid-cols-2 gap-x-12 gap-y-16">
+                        <div class="flex group">
+                            <div class="w-16 flex-shrink-0 flex justify-center border-r border-[#2c1e16]/20 pr-4 mr-6">
+                                <h3 class="text-3xl text-[#2c1e16] tracking-widest group-hover:text-[#8b261b] transition-colors" style="writing-mode: vertical-rl;">晏朝景</h3>
+                            </div>
+                            <div class="flex flex-col justify-center space-y-1">
+                                <div class="inline-block border border-[#2c1e16]/30 px-3 py-1 mb-2 w-max text-xs text-[#4a3a31] tracking-widest">御珩公子</div>
+                                <p class="text-[#8b261b] italic mb-2 tracking-widest text-base">「你要情報還是要死守秘密？」</p>
+                                <p class="text-[#4a3a31] text-xs tracking-wider">畢方｜28歲｜187cm｜男</p>
+                                <p class="text-[#4a3a31] text-xs leading-relaxed text-justify pt-1">個性清冷的情報商，墜隳樓之主。行蹤成謎，組織內部都不一定聯絡得上他。樓主總撐著血紅色傘，傘柄是畢方浮雕，內藏青中帶紅的軟劍，傘緣綴飾黃色符紙，月光下更添詭異。</p>
+                            </div>
+                        </div>
+
+                        <div class="flex group">
+                            <div class="w-16 flex-shrink-0 flex justify-center border-r border-[#2c1e16]/20 pr-4 mr-6">
+                                <h3 class="text-3xl text-[#2c1e16] tracking-widest group-hover:text-[#8b261b] transition-colors" style="writing-mode: vertical-rl;">豔赨閣</h3>
+                            </div>
+                            <div class="flex flex-col justify-center space-y-1">
+                                <div class="inline-block border border-[#2c1e16]/30 px-3 py-1 mb-2 w-max text-xs text-[#4a3a31] tracking-widest">馭蘅公子</div>
+                                <p class="text-[#8b261b] italic mb-2 tracking-widest text-base">「解藥藥力能比我的毒發快？」</p>
+                                <p class="text-[#4a3a31] text-xs tracking-wider">赤鱬｜24歲｜178cm｜男</p>
+                                <p class="text-[#4a3a31] text-xs leading-relaxed text-justify pt-1">本名葬荒，墜隳樓代樓主。本業藥師，愛製毒和調香。樓主不在時由其坐鎮指揮。手持天秤象徵裁決，金髮紫衣常做花魁扮相。不過豔副樓主真的不賣身（再次強調）。</p>
+                            </div>
+                        </div>
+
+                        <div class="flex group">
+                            <div class="w-16 flex-shrink-0 flex justify-center border-r border-[#2c1e16]/20 pr-4 mr-6">
+                                <h3 class="text-3xl text-[#2c1e16] tracking-widest group-hover:text-[#8b261b] transition-colors" style="writing-mode: vertical-rl;">赩赫</h3>
+                            </div>
+                            <div class="flex flex-col justify-center space-y-1">
+                                <div class="inline-block border border-[#2c1e16]/30 px-3 py-1 mb-2 w-max text-xs text-[#4a3a31] tracking-widest">緋燁染霄</div>
+                                <p class="text-[#8b261b] italic mb-2 tracking-widest text-base">「怎麼不笑了是不喜歡笑嗎？」</p>
+                                <p class="text-[#4a3a31] text-xs tracking-wider">鬼車｜22歲｜184cm｜男</p>
+                                <p class="text-[#4a3a31] text-xs leading-relaxed text-justify pt-1">身法詭異的殺手，貪吃且話癆。手持刃扇。偏好在目標享用美食時下手，為不浪費食物會把東西吃光，一面優雅用餐一面出言嘲諷。</p>
+                            </div>
+                        </div>
+
+                        <div class="flex group">
+                            <div class="w-16 flex-shrink-0 flex justify-center border-r border-[#2c1e16]/20 pr-4 mr-6">
+                                <h3 class="text-3xl text-[#2c1e16] tracking-widest group-hover:text-[#8b261b] transition-colors" style="writing-mode: vertical-rl;">肂㱙</h3>
+                            </div>
+                            <div class="flex flex-col justify-center space-y-1">
+                                <div class="inline-block border border-[#2c1e16]/30 px-3 py-1 mb-2 w-max text-xs text-[#4a3a31] tracking-widest">萌燁絨樞</div>
+                                <p class="text-[#8b261b] italic mb-2 tracking-widest text-base">「我喜歡你揣兜裡的亮晶晶！」</p>
+                                <p class="text-[#4a3a31] text-xs tracking-wider">猼訑｜16歲｜158cm｜女</p>
+                                <p class="text-[#4a3a31] text-xs leading-relaxed text-justify pt-1">冷兵器專家，擅長各種兵器的製造設計及維護。晏朝景的傘劍、赩赫的刃扇皆為其手筆。最近正在考慮改造葬荒的藥秤或泠澈的醫典？</p>
+                            </div>
+                        </div>
+
+                        <div class="flex group">
+                            <div class="w-16 flex-shrink-0 flex justify-center border-r border-[#2c1e16]/20 pr-4 mr-6">
+                                <h3 class="text-3xl text-[#2c1e16] tracking-widest group-hover:text-[#8b261b] transition-colors" style="writing-mode: vertical-rl;">泠澈</h3>
+                            </div>
+                            <div class="flex flex-col justify-center space-y-1">
+                                <div class="inline-block border border-[#2c1e16]/30 px-3 py-1 mb-2 w-max text-xs text-[#4a3a31] tracking-widest">寒燁極淵</div>
+                                <p class="text-[#8b261b] italic mb-2 tracking-widest text-base">「你的死因未必不能是解剖。」</p>
+                                <p class="text-[#4a3a31] text-xs tracking-wider">文鰩｜26歲｜193cm｜男</p>
+                                <p class="text-[#4a3a31] text-xs leading-relaxed text-justify pt-1">醫術高超神祕莫測，不愛露面的醫者，墜隳樓最大外快來源。關於此人目前記載不多。</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `,
+            services: `
+                <div class="max-w-5xl mx-auto">
+                    <div class="flex flex-col items-center mb-16">
+                        <h2 class="text-2xl tracking-[0.3em] text-[#2c1e16] mb-4">業務範疇</h2>
+                        <div class="w-12 h-[1px] bg-[#8b261b]"></div>
+                    </div>
+
+                    <div class="grid md:grid-cols-3 gap-12">
+                        <div class="relative border border-[#2c1e16]/20 p-8 bg-[#fff8e8]/60 hover:bg-[#2c1e16]/[0.02] transition-colors">
+                            <div class="text-[#8b261b]/30 text-5xl mb-4 font-light italic">01</div>
+                            <h3 class="text-2xl text-[#2c1e16] tracking-widest mb-1">情報出售</h3>
+                            <p class="text-[#4a3a31] text-sm tracking-widest mb-8 border-b border-[#2c1e16]/10 pb-4">不收沒用的東西<br>例如 你的命</p>
+                            <ul class="space-y-4">
+                                <li class="flex items-center text-[#4a3a31] tracking-widest text-sm"><span class="w-1.5 h-1.5 bg-[#8b261b]/60 rotate-45 mr-4"></span>一份情報僅售賣一次</li>
+                                <li class="flex items-center text-[#4a3a31] tracking-widest text-sm"><span class="w-1.5 h-1.5 bg-[#8b261b]/60 rotate-45 mr-4"></span>可用其他機密交換</li>
+                                <li class="flex items-center text-[#4a3a31] tracking-widest text-sm"><span class="w-1.5 h-1.5 bg-[#8b261b]/60 rotate-45 mr-4"></span>故事讓副樓主滿意亦可</li>
+                                <li class="flex items-center text-[#4a3a31] tracking-widest text-sm"><span class="w-1.5 h-1.5 bg-[#8b261b]/60 rotate-45 mr-4"></span>小樓也收珍稀礦石</li>
+                            </ul>
+                        </div>
+
+                        <div class="relative border border-[#2c1e16]/20 p-8 bg-[#fff8e8]/60 hover:bg-[#2c1e16]/[0.02] transition-colors">
+                            <div class="text-[#8b261b]/30 text-5xl mb-4 font-light italic">02</div>
+                            <h3 class="text-2xl text-[#2c1e16] tracking-widest mb-1">神醫聖手</h3>
+                            <p class="text-[#4a3a31] text-sm tracking-widest mb-8 border-b border-[#2c1e16]/10 pb-4">疑難雜症也是信手拈來好吧</p>
+                            <ul class="space-y-4">
+                                <li class="flex items-center text-[#4a3a31] tracking-widest text-sm"><span class="w-1.5 h-1.5 bg-[#8b261b]/60 rotate-45 mr-4"></span>各種疾病診斷+治療</li>
+                                <li class="flex items-center text-[#4a3a31] tracking-widest text-sm"><span class="w-1.5 h-1.5 bg-[#8b261b]/60 rotate-45 mr-4"></span>心理疾病也能醫</li>
+                                <li class="flex items-center text-[#4a3a31] tracking-widest text-sm"><span class="w-1.5 h-1.5 bg-[#8b261b]/60 rotate-45 mr-4"></span>藥物開發</li>
+                                <li class="flex items-center text-[#4a3a31] tracking-widest text-sm"><span class="w-1.5 h-1.5 bg-[#8b261b]/60 rotate-45 mr-4"></span>安神香訂製</li>
+                            </ul>
+                        </div>
+
+                        <div class="relative border border-[#2c1e16]/20 p-8 bg-[#fff8e8]/60 hover:bg-[#2c1e16]/[0.02] transition-colors">
+                            <div class="text-[#8b261b]/30 text-5xl mb-4 font-light italic">03</div>
+                            <h3 class="text-2xl text-[#2c1e16] tracking-widest mb-1">特殊服務</h3>
+                            <p class="text-[#4a3a31] text-sm tracking-widest mb-8 border-b border-[#2c1e16]/10 pb-4">您想到的 吾等努力達成</p>
+                            <ul class="space-y-4">
+                                <li class="flex items-center text-[#4a3a31] tracking-widest text-sm"><span class="w-1.5 h-1.5 bg-[#8b261b]/60 rotate-45 mr-4"></span>花錢買兇</li>
+                                <li class="flex items-center text-[#4a3a31] tracking-widest text-sm"><span class="w-1.5 h-1.5 bg-[#8b261b]/60 rotate-45 mr-4"></span>雇保鑣</li>
+                                <li class="flex items-center text-[#4a3a31] tracking-widest text-sm"><span class="w-1.5 h-1.5 bg-[#8b261b]/60 rotate-45 mr-4"></span>防禦機關工事</li>
+                                <li class="flex items-center text-[#4a3a31] tracking-widest text-sm"><span class="w-1.5 h-1.5 bg-[#8b261b]/60 rotate-45 mr-4"></span>專屬武器設計</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            `,
+            contact: `
+                <div class="max-w-3xl mx-auto">
+                    <div class="flex flex-col items-center mb-16">
+                        <h2 class="text-2xl tracking-[0.3em] text-[#2c1e16] mb-4">寒鴉傳信</h2>
+                        <div class="w-12 h-[1px] bg-[#8b261b]"></div>
+                        <p class="mt-4 text-[#4a3a31] tracking-widest text-sm">留下委託，本樓專員將於暗處與您接洽</p>
+                    </div>
+
+                    <form class="space-y-10" onsubmit="event.preventDefault(); alert('密函已透過暗線送出，請靜候回音。');">
+                        <div class="grid md:grid-cols-2 gap-10">
+                            <input type="text" placeholder="尊姓大名" required class="w-full bg-transparent border-b border-[#2c1e16]/30 py-3 text-[#2c1e16] tracking-widest focus:outline-none focus:border-[#8b261b] placeholder-[#2c1e16]/30">
+                            <input type="text" placeholder="聯繫暗號" required class="w-full bg-transparent border-b border-[#2c1e16]/30 py-3 text-[#2c1e16] tracking-widest focus:outline-none focus:border-[#8b261b] placeholder-[#2c1e16]/30">
+                        </div>
+                        <select class="w-full bg-transparent border-b border-[#2c1e16]/30 py-3 text-[#2c1e16] tracking-widest focus:outline-none focus:border-[#8b261b] cursor-pointer">
+                            <option value="" disabled selected class="bg-[#f2e4c2]">請選擇委託性質...</option>
+                            <option value="1" class="bg-[#f2e4c2]">情報出售</option>
+                            <option value="2" class="bg-[#f2e4c2]">神醫聖手</option>
+                            <option value="3" class="bg-[#f2e4c2]">特殊服務</option>
+                        </select>
+                        <textarea rows="4" placeholder="請簡述您的需求，本樓恪守保密原則..." required class="w-full bg-transparent border-b border-[#2c1e16]/30 py-3 text-[#2c1e16] tracking-widest focus:outline-none focus:border-[#8b261b] resize-none placeholder-[#2c1e16]/30"></textarea>
+                        <div class="text-center pt-8">
+                            <button type="submit" class="border border-[#2c1e16] text-[#2c1e16] hover:bg-[#2c1e16] hover:text-[#e8dcb8] px-12 py-3 tracking-[0.3em] transition-all duration-500">
+                                遞交密函
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            `,
+            announcement: `
+                <div class="max-w-4xl mx-auto">
+                    <div class="flex flex-col items-center mb-16">
+                        <h2 class="text-2xl tracking-[0.3em] text-[#2c1e16] mb-4">組織公告</h2>
+                        <div class="w-12 h-[1px] bg-[#8b261b]"></div>
+                    </div>
+                    <div class="space-y-8">
+                        <div class="border-b border-[#2c1e16]/15 pb-6">
+                            <div class="text-[#8b261b] text-xs tracking-widest mb-2">永久置頂</div>
+                            <h3 class="text-xl tracking-widest mb-2 text-[#2c1e16]">【招募】大荒眾妖想搞錢的，墜隳樓歡迎你.ᐟ.ᐟ</h3>
+                            <p class="text-[#4a3a31] text-sm leading-relaxed">帶著你的才能，加入墜隳樓，和我們一起虛榮.ᐟ.ᐟ</p>
+                        </div>
+                    </div>
+                </div>
+            `,
+            qa: `
+                <div class="max-w-3xl mx-auto">
+                    <div class="flex flex-col items-center mb-16">
+                        <h2 class="text-2xl tracking-[0.3em] text-[#2c1e16] mb-4">常見問答</h2>
+                        <div class="w-12 h-[1px] bg-[#8b261b]"></div>
+                    </div>
+                    <div class="space-y-6 text-sm text-[#4a3a31]">
+                        <div><strong class="text-[#2c1e16]">Q: 如何確認委託已被接單？</strong><br>A: 本樓將於三日內透過您留下的聯繫暗號做出回覆。</div>
+                        <div><strong class="text-[#2c1e16]">Q: 委託費用如何結算？</strong><br>A: 依照執行對象收取黃金白銀、珍稀礦石甚至...幾頓飯就能解決。</div>
+                    </div>
+                </div>
+            `
+        };
+
+        // 切換分頁邏輯 (SPA)
+        function switchTab(tabId) {
+            const container = document.getElementById('content-container');
+            container.classList.remove('animate-fade-in');
+            
+            // 更新導覽按鈕狀態
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('text-[#8b261b]');
+                btn.classList.add('text-[#4a3a31]');
+                const underline = btn.querySelector('span');
+                if (underline) underline.classList.remove('scale-x-100');
+                if (underline) underline.classList.add('scale-x-0');
+            });
+
+            const activeBtn = document.getElementById(`nav-${tabId}`);
+            if (activeBtn) {
+                activeBtn.classList.remove('text-[#4a3a31]');
+                activeBtn.classList.add('text-[#8b261b]');
+                const activeUnderline = activeBtn.querySelector('span');
+                if (activeUnderline) {
+                    activeUnderline.classList.remove('scale-x-0');
+                    activeUnderline.classList.add('scale-x-100');
+                }
+            }
+
+            // 渲染對應內容
+            setTimeout(() => {
+                container.innerHTML = pages[tabId] || pages['history'];
+                container.classList.add('animate-fade-in');
+            }, 150);
+        }
+
+        // 初始化預設頁面
+        switchTab('history');
+    </script>
+</body>
+</html>
